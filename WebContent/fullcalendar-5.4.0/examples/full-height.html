@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<script  src="http://code.jquery.com/jquery-3.3.1.js"></script>
+<link href='/fullcalendar-5.4.0/lib/main.css' rel='stylesheet' />
+<link href='/fullcalendar-5.4.0/lib/resv.css' rel='stylesheet' />
+<link rel="shortcut icon" href="#">
+<script src='/fullcalendar-5.4.0/lib/main.js'></script>
+<style type="text/css">
+	
+</style>
+<script>
+$(document).ready(function(){
+	  $("div").removeClass("fc-daygrid-event-harness");
+		$("div").removeClass("fc-daygrid-event-harness-abs");
+		$(".fc-event-title-container").parent().parent().parent().remove();
+		$(".fc-daygrid-event-dot").parent().remove();
+});
+  document.addEventListener('DOMContentLoaded', function() {
+	  $("div").removeClass("fc-daygrid-event-harness");
+		$("div").removeClass("fc-daygrid-event-harness-abs");
+		$(".fc-event-title-container").parent().parent().parent().remove();
+		$(".fc-daygrid-event-dot").parent().remove();
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      height: '100%',
+      expandRows: true,
+      slotMinTime: '08:00',
+      slotMaxTime: '20:00',
+      //우측상단툴바메뉴조정
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth'
+      },
+      initialView: 'dayGridMonth',
+      //초기화 날짜
+      initialDate: '2020-09-12',  //sysdate로 설정 요망
+      navLinks: false, // can click day/week names to navigate views
+      editable: true,//일정 드래그 앤 드랍
+      selectable: true,
+      nowIndicator: true,
+      dayMaxEvents: true, // allow "more" link when too many events
+      events: [
+          
+         
+        ]
+      });
+
+    calendar.render();
+    
+    var test3 = $("td[data-date]");
+    test3.each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			console.log(test3.eq(i).attr('data-date'));
+			var resvDate=test3.eq(i).attr('data-date');
+			$("div[name=r_date]").attr("value",resvDate);
+			$("div[name=r_date]").html(resvDate);
+			$("input[name=r_date]").attr("value",resvDate);
+			console.log($("input[name=resvDate]").val());
+			/*
+				클릭시 resvDate를 디비에 보내 
+				리스트에 시작시간과 총시간 가져옴
+				반복문을 돌려서 시간만큼 비활성화
+			*/
+			$.ajax({
+				url:"/printReservedDateTime",
+				type:"get",
+				data:{resvDate:resvDate},
+				success:function(data){
+					console.log(data.length);
+					for(var i=0;i<data.length;i++){
+						var sTime=Number(data[i].sTime);
+						var eTime=Number(data[i].eTime);
+						//var timeLabel =document.getElementsByClassName("labelchk");
+						var timeLabel = $(".labelchk");
+						for(var i=0;i<timeLabel.length;i++){
+							var val = timeLabel.eq(i).attr("value");							
+							if(Number(val)>=sTime && Number(val)<=eTime){
+								timeLabel.eq(i).addClass("resv-chk-style-disabled");
+								timeLabel.eq(i).children().prop("disabled",true);								
+							}
+						}
+					}
+					
+				},error:function(){
+					console.log("실패");
+				}
+			});
+			});
+		});
+    });
+  $(".fc-daygrid-day-frame").click(function(){
+	  
+  });
+	window.onload=function(){
+		$("a[data-navlink]").removeAttr('data-navlink');
+	};
+</script>
+<style>
+
+  html, body {
+    overflow: hidden; /* don't do scrollbars */
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .fc-header-toolbar {
+    /*
+    the calendar will be butting up against the edges,
+    but let's scoot in the header's buttons
+    */
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  .resv-content{
+  	float:left;
+  	position:relative;
+  }
+	#calendar-container{
+		position:absolute;
+		color:black;
+}
+a{
+	color:black;
+}
+
+</style>
+</head>
+<body>
+	<div class="resv-main-frame">
+    <div class="resv-chk">
+        <a href="#" class="resv-chk-do">예약하기</a>
+    </div>
+    <div class="resv-chk">
+        <a href="#" class="resv-chk-do">예약확인</a>
+    </div>
+    <div class="resv-content">
+  <div id='calendar-container'>
+    <div id='calendar'></div>
+    </div>
+  </div>
+  <form name="f" action="/reservationLoginChk">
+ 
+<div class="resv-select">
+        <div class="resv-chkbox">
+            <div class="chkbox-frame">
+                <div class="chkbox">
+                    <input type="radio" name="concept" id="body-profile" value="바디프로필"><label for="body-profile">바디프로필</label>
+                </div>
+                <div class="chkbox">
+                    <input type="radio" name="concept" id="indiv-profile" value="개인프로필"><label for="indiv-profile">개인프로필</label>
+                </div>
+                <div class="chkbox">
+                    <input type="radio" name="concept" id="group-profile" value="단체사진"><label for="group-profile">단체사진</label>
+                </div>
+            </div>
+        </div>
+        <div class="resv-cut-option">
+            <div class="resv-selectbox">
+                <label for="resv-select" id="cut-label">컷수:</label>
+
+                <select name="cut" id="resv-select">
+                    <option value="">--원하는 컷수를 선택하세요--</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+        </div>
+         <div class="resv-time-chk">
+          <div class="resv-day-screen" value="" name="r_date">
+          	
+          </div>
+          <input type="hidden" name="r_date" value="">
+          <div class="startendSel">
+                        <input type="radio" value="start" id="ssel" class="resv-sesel" name="sesel"><label for="ssel">시작시간</label>
+                        <input type="radio" value="end" id="esel" class="resv-sesel" name="sesel"><label for="esel">종료시간</label>
+                    </div>
+                <div class="resv-time-list">
+                   
+                   <label for="11" class="labelchk" value="11">11시
+                        <input type="checkbox" class="resv-time-chkbox" value="11" id="11" style="display: none">
+                    </label>
+                    <label for="12" class="labelchk" value="12">12시
+                        <input type="checkbox" class="resv-time-chkbox" value="12" id="12" style="display: none">
+                    </label>
+                    <label for="1" class="labelchk" value="13">1시
+                        <input type="checkbox" class="resv-time-chkbox" value="13" id="1" style="display: none">
+                    </label>
+                    <label for="2" class="labelchk" value="14">2시
+                        <input type="checkbox" class="resv-time-chkbox" value="14" id="2" style="display: none">
+                    </label>
+                    <label for="3" class="labelchk" value="15">3시
+                        <input type="checkbox" class="resv-time-chkbox" value="15" id="3" style="display: none">
+                    </label>
+                </div>
+                <div class="resv-time-list" >
+                  
+                   <label for="4" class="labelchk" value="16">4시
+                        <input type="checkbox" class="resv-time-chkbox" value="16" id="4" style="display: none">
+                    </label>
+                    <label for="5" class="labelchk" value="17">5시
+                        <input type="checkbox" class="resv-time-chkbox" value="17" id="5" style="display: none">
+                    </label>
+                    <label for="6" class="labelchk" value="18">6시
+                        <input type="checkbox" class="resv-time-chkbox" value="18" id="6" style="display: none">
+                    </label>
+                    <label for="7" class="labelchk" value="19">7시
+                        <input type="checkbox" class="resv-time-chkbox" value="19" id="7" style="display: none">
+                    </label>
+                    <label for="8" class="labelchk" value="20">8시
+                        <input type="checkbox" class="resv-time-chkbox" value="20" id="8" style="display: none">
+                    </label>
+                </div>
+            </div>
+        <div class="resv-submit">
+           
+            <div class="resv-submit-div">
+                        <input type="text" class="resv-submit-input" id="resv-submit-input-text" readonly>
+                    </div>
+                    <div class="resv-submit-div">
+                        <input type="password" id="resv-submit-input-pass" class="resv-submit-input" name="r_pass" required placeholder="4자리 비밀번호" minlength="4" maxlength="4" pattern="[0-9]+">
+                    </div>
+                    <div class="resv-submit-div">
+                        <button type="submit" class="resv-submit-input">예약하기</button>
+                    </div>
+            <input type="hidden" id="sendstartday" name="s_time" value="">
+            <input type="hidden" id="sendendday" name="e_time" value="">
+        </div>
+        </div>
+        </form>
+        </div>
+        
+</body>
+
+<script>
+var option;
+var startDay = 0;
+var endDay = 0;
+var picPrice = 0;
+var cutPrice = 0;
+var timePrice = 0;
+window.onload = function() {
+    $("#resv-submit-input-text").attr("value", picPrice + cutPrice + timePrice + "원");
+};
+//컨셉의 가격표
+$('input[name="concept"]').click(function() {
+
+    if ($(this).attr('value') == "body") {
+        picPrice = 10000;
+        console.log(picPrice);
+    } else if ($(this).attr('value') == "indiv") {
+        picPrice = 5000;
+        console.log(picPrice);
+    } else {
+        picPrice = 15000;
+        console.log(picPrice);
+    }
+    $("#resv-submit-input-text").attr("value", picPrice + cutPrice + timePrice + "원");
+});
+//컷수당의 가격수
+$('select[name="cut"]').change(function() {
+    cutPrice = $(this).val() * 1000;
+    $("#resv-submit-input-text").attr("value", picPrice + cutPrice + timePrice + "원");
+});
+//시작과 끝시간
+$(".labelchk").click(function() {
+    if (endDay > 0 && startDay > 0) {
+        timePrice = (endDay - startDay) * 100000;
+        $("#resv-submit-input-text").attr("value", picPrice + cutPrice + timePrice + "원");
+    } else {
+        timePrice = 0;
+        $("#resv-submit-input-text").attr("value", picPrice + cutPrice + timePrice + "원");
+
+    }
+
+});
+    $('.resv-sesel').click(function() {
+        option = $(this).val();
+        console.log(option);
+        var inputChkbox = $('input[type="checkbox"]');
+        inputChkbox.click(function() {
+            if (option == "start") {
+                $('.resv-chk-style-start').prop("checked", false);
+                inputChkbox.parent().removeClass("resv-chk-style-start");
+              	//속성설정
+                $(this).prop("checked", true);
+                $(this).parent().addClass("resv-chk-style-start");
+                startDay=$(this).parent().attr("value");
+                console.log("length = "+inputChkbox.length);
+                
+                //만약 end로 고른게 더 크다면
+                if(startDay<endDay){
+                    inputChkbox.parent().removeClass("resv-chk-style");
+                    console.log("end = "+endDay);
+                    var leng=inputChkbox.length;
+                  	//색처리과정
+                    for(var i=0;i<leng;i++){
+                    	var temp = inputChkbox.eq(i).parent().attr("value");
+                    	//값이 시작시간보다 클때
+                        if(temp>startDay){
+                        	//끝점이니 탈출
+                            if(temp==endDay){
+                                break;
+                            }
+                            inputChkbox.eq(i).parent().addClass("resv-chk-style");                            
+                        }
+                    }
+                    //start보다 작거나 같다면(start값으로 설정)
+                }else{
+                	//속성설정
+                    $('.resv-chk-style-end').prop("checked", false);
+                    inputChkbox.parent().removeClass("resv-chk-style-end");
+                    inputChkbox.parent().removeClass("resv-chk-style");
+                    endDay=0;
+                }
+                //end일떄
+            }else if(option == "end"){
+            	//속성설정
+                $('.resv-chk-style-end').prop("checked", false);
+                inputChkbox.parent().removeClass("resv-chk-style-end");
+                $(this).prop("checked", true);
+                $(this).parent().addClass("resv-chk-style-end");
+                endDay=$(this).parent().attr("value");
+                console.log("start = "+startDay);
+                console.log("end = "+endDay);
+                //end가 start보다 크고 start가 값이 정해진경우
+                if(startDay<endDay&&startDay!=0){
+                    inputChkbox.parent().removeClass("resv-chk-style");
+                    console.log("end = "+endDay);
+                    var leng=inputChkbox.length;
+                    //색처리과정
+                    for(var i=0;i<leng;i++){
+                    	var temp = inputChkbox.eq(i).parent().attr("value");
+                    	//값이 시작시간보다 클때
+                        if(temp>startDay){
+                        	//끝점이니 탈출
+                            if(temp==endDay){
+                                break;
+                            }
+                            inputChkbox.eq(i).parent().addClass("resv-chk-style");
+                        }
+                    }
+                    //위의 조건의 부정(end값으로 설정)
+                }else{
+                	//속성설정
+                    $('.resv-chk-style-start').prop("checked", false);
+                    inputChkbox.parent().removeClass("resv-chk-style-start");
+                    inputChkbox.parent().removeClass("resv-chk-style");
+                    startDay=0;
+                }
+            }
+            //hidden으로 숨겨놓은 부분 값 할당
+			if(startDay>0&&endDay>0){
+				$('#sendstartday').attr("value",startDay);
+				$('#sendendday').attr("value",endDay);
+			}
+        });
+    });
+    $('button[type="submit"]').click(function(){
+        
+        if(document.f.cut.value==""||startDay==null||startDay==0||endDay==null||endDay==0||document.f.concept.value==""){
+            alert("다시");
+           return false;
+        }
+	});
+	
+</script>
+</html>

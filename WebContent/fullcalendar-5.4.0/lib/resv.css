@@ -1,0 +1,247 @@
+.resv-main-frame{
+    
+    min-width: 800px;
+    height: 1300px;
+	margin:0 auto;
+} 
+.resv-chk {
+        width: 50%;
+        height: 40px;
+        float: left;
+        border-bottom:  1px solid;
+       border-bottom-color: rgb(246, 177, 177);
+        box-sizing: border-box;
+             line-height:40px;
+        text-align: center;
+    }
+.resv-chk-do{
+    color: rgb(246, 177, 177);
+   
+}
+
+    .resv-chk:nth-child(1) {
+        border-right: 0px;
+    }
+
+   
+
+    .resv-content {
+        width: 100%;
+        height: 900px;
+       
+        box-sizing: border-box;
+    }
+
+    .resv-select {
+        margin-left:10%;
+		width:80%;
+        height: 350px;
+        background-color: #f8f9fa;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size:17px;
+        box-sizing: border-box;
+		float:left;
+		min-width:1050px;
+    }
+
+    .resv-chkbox {
+        width: 30%;
+        height: 250px;
+        float: left;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .resv-cut-option {
+        width: 20%;
+        height: 250px;
+        box-sizing: border-box;
+        float: left;
+        text-align: center;
+    }
+
+   
+
+    .resv-submit {
+        width: 100%;
+        height: 100px;
+        
+        box-sizing: border-box;
+        float: left;
+    }
+ 
+    .chkbox {
+
+        height: 50px;
+        display: block;
+        line-height: 50px;
+    }
+
+    .chkbox-frame {
+        margin-top: 50px;
+    }
+
+    .resv-selectbox {
+        margin-top: 20px;
+    }
+
+    #cut-label {
+        display: block;
+    }
+
+    .resv-submit {
+        text-align: center;
+        line-height: 100px;
+    }
+
+    .resv-submit button {
+        width: 200px;
+        height: 60px;
+    }
+    
+    .resv-time-list{
+        width: 80%;
+        height: 42px;
+        
+        box-sizing: border-box;
+        margin: 0 auto;
+        margin: 56px;
+        margin-left:100px;
+    }
+    
+    .resv-time-chk {
+        width: 50%;
+        height: 250px;
+        
+        box-sizing: border-box;
+        align-content: center;
+        float: left;
+        position:relative;
+    }
+    
+    .labelchk{
+    display: block;
+    height: 40px;
+        width: 20%;
+        border-radius: 20px 20px 20px 20px;
+        border:1px solid #f8f9fa;
+        box-sizing:border-box;
+    float: left;
+    color: black;
+    background-color:rgb(241, 209, 209);
+    text-align: center;
+    line-height: 40px;
+}
+
+.resv-day-screen{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 50px;
+    color:black;
+    text-align:center;
+    font-size:1.5em;
+    margin-left:70px;
+}
+    p{
+    color: black;
+}
+.resv-chk-style-start{
+    background-color: white;
+    color: black;
+}
+.resv-chk-style-end{
+    background-color: white;
+    color: black;
+}
+.resv-chk-style{
+    background-color: white;
+    color: black;
+}
+.resv-time-chk{
+    position: relative;
+}
+.startendSel{
+    position:absolute;
+    width: 200px;
+    height: 50px;
+    left: 200px;
+    top: 0;
+}
+#resv-submit-input-pass{
+    width: 230px;
+    height: 50px;
+    margin-top:20px;
+}
+#resv-submit-input-text{
+    width: 200px;
+    background:transparent;
+    border: none;
+    text-align:left;
+    color:#56373c;
+}
+.resv-submit-div-price{
+	width:30%;	
+	text-align:center;
+	float:left;
+}
+.resv-submit-div-pw{
+	width:20%;
+	float:left;
+}
+.resv-submit-div-go{
+	width:50%;
+	float:left;
+	
+}
+
+.resv-submit input{
+    text-align:center;
+    
+}
+.resv-submit button{
+    text-align:center;
+	line-height:30px;
+	margin-top:20px;
+}
+  select {
+  width: 230px;
+  padding: .8em .5em;
+  font-family: inherit;
+  background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%;
+  background-color:white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid black;
+  border-radius: 0px;
+}
+select::-ms-expand {
+  /* for IE 11 */
+  display: none;
+}
+.resv-chk-style-disabled{
+	display: block;
+    height: 40px;
+        width: 20%;
+        border:1px solid #f8f9fa;
+        box-sizing:border-box;
+    float: left;
+    color: #f8f9fa;
+    background-color:#f8f9fa;
+    text-align: center;
+    line-height: 40px;
+}
+#resv-select{
+	height:60px;
+	
+	
+}
+#resv-concept-select{
+	height:60px;
+}
+#calendar{
+	width:80%;
+	margin:0 auto;
+}
